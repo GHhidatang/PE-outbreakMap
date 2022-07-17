@@ -1,9 +1,18 @@
 <script setup lang="ts">
   import axios from 'axios';
-  import { onMounted } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
+  const data = reactive({
+    name: "tina", 
+  })
+
+  let active = ref<Boolean>(true);
+
+  let tabClick = (flag: Boolean) => {
+    active.value = flag;
+  }
 
   onMounted(()=>{
-    axios('https://c.m.163.com/api/ug/api/wuhan/app/data/list-total?t=330415245809'
+    axios('/api/ug/api/wuhan/app/data/list-total'
     ).then((res)=> {
       console.log(res);
     })
@@ -21,54 +30,54 @@
 
     <div class="cover-cards">
       <div class="cover-tab">
-        <div class="active">全国疫情数据(含港澳台)</div>
-        <div>湖北疫情数据</div>
-      </div>
+        <div @click="tabClick(true)" :class="{'active': active}">全国疫情数据(含港澳台)</div>
+        <div @click="tabClick(false)" :class="{'active': !active}">湖北疫情数据</div>
+      </div> 
 
       <div class="cover-info">
         <div>
           <h4>境外输出</h4>
-          <p>12345</p>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
           </p>
         </div>
         <div>
-          <h4>境外输出</h4>
-          <p>12345</p>
+          <h4>无症状感染</h4>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
           </p>
         </div>
         <div>
-          <h4>境外输出</h4>
-          <p>12345</p>
+          <h4>现有确诊</h4>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
           </p>
         </div>
         <div>
-          <h4>境外输出</h4>
-          <p>12345</p>
+          <h4>累计确诊</h4>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
           </p>
         </div>
         <div>
-          <h4>境外输出</h4>
-          <p>12345</p>
+          <h4>累计死亡</h4>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
           </p>
         </div>
         <div>
-          <h4>境外输出</h4>
-          <p>12345</p>
+          <h4>累计治愈</h4>
+          <p>123456</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
