@@ -1,8 +1,23 @@
 <script setup lang="ts">
   import axios from 'axios';
-  import { onMounted, reactive, ref } from 'vue';
+  import { onMounted, reactive, ref, toRefs } from 'vue';
+
+  // interface IData {
+  //   name: string;
+  //   type: number;
+  // }
+
   const data = reactive({
     name: "tina", 
+    areaTree: [],
+    chinaDayList: [],
+    chinaTotal: {},
+    china: [],
+    hbData: {},
+    type: 1,
+    mapType: 1,
+    lineType: 1,
+    lastUpdataTime: "",
   })
 
   let active = ref<Boolean>(true);
@@ -15,8 +30,14 @@
     axios('/api/ug/api/wuhan/app/data/list-total'
     ).then((res)=> {
       console.log(res);
-    })
-  })
+      data.areaTree = res.data.data.areaTree;
+      data.chinaDayList = res.data.data.chinaDayList;
+      data.chinaTotal = res.data.data.chinaTotal;
+      // console.log(data);
+    });
+  });
+
+  const { chinaTotal } = toRefs(data);
 </script>
 
 <template>
@@ -34,10 +55,10 @@
         <div @click="tabClick(false)" :class="{'active': !active}">湖北疫情数据</div>
       </div> 
 
-      <div class="cover-info">
+      <div v-if = "chinaTotal.total" class="cover-info">
         <div>
           <h4>境外输出</h4>
-          <p>123456</p>
+          <p>{{chinaTotal.total.input}}</p>
           <p>
             <span>较昨日</span>
             <span>+123</span>
