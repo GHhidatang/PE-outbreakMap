@@ -7,24 +7,17 @@
   //   type: number;
   // }
 
-  const data = reactive({
+  const data:any = reactive({
     name: "tina", 
     areaTree: [],
     chinaDayList: [],
     chinaTotal: {},
     china: [],
     hbData: {},
-    type: 1,
     mapType: 1,
     lineType: 1,
     lastUpdataTime: "",
   })
-
-  let active = ref<Boolean>(true);
-
-  let tabClick = (flag: Boolean) => {
-    active.value = flag;
-  }
 
   onMounted(()=>{
     axios('/api/ug/api/wuhan/app/data/list-total'
@@ -33,11 +26,19 @@
       data.areaTree = res.data.data.areaTree;
       data.chinaDayList = res.data.data.chinaDayList;
       data.chinaTotal = res.data.data.chinaTotal;
-      // console.log(data);
+      data.china = data.areaTree.find((v:any) => v.id === "0").children;
+      data.hbData = data.china.find((v:any) => v.id === "420000");
+      console.log(data.huData);
     });
   });
+  
+  let active = ref<Boolean>(true);
 
-  const { chinaTotal } = toRefs(data);
+  let tabClick = (flag: Boolean) => {
+    active.value = flag;
+  }
+
+  const { chinaTotal, huData } = toRefs(data);
 </script>
 
 <template>
@@ -55,53 +56,88 @@
         <div @click="tabClick(false)" :class="{'active': !active}">湖北疫情数据</div>
       </div> 
 
-      <div v-if = "chinaTotal.total" class="cover-info">
+      <!-- 全国疫情数据 -->
+      <div v-if="chinaTotal.total" v-show="active" class="cover-info">
         <div>
-          <h4>境外输出</h4>
+          <h4>境外输入</h4>
           <p>{{chinaTotal.total.input}}</p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.today.input}}</span>
           </p>
         </div>
         <div>
           <h4>无症状感染</h4>
-          <p>123456</p>
+          <p>{{chinaTotal.extData.noSymptom}}</p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.extData.incrNoSymptom}}</span>
           </p>
         </div>
         <div>
           <h4>现有确诊</h4>
-          <p>123456</p>
+          <p>
+            {{
+              chinaTotal.total.confirm -
+              chinaTotal.total.dead -
+              chinaTotal.total.heal
+            }}
+          </p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.today.storeConfirm}}</span>
           </p>
         </div>
         <div>
           <h4>累计确诊</h4>
-          <p>123456</p>
+          <p>{{chinaTotal.total.confirm}}</p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.today.confirm}}</span>
           </p>
         </div>
         <div>
           <h4>累计死亡</h4>
-          <p>123456</p>
+          <p>{{chinaTotal.total.dead}}</p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.today.dead}}</span>
           </p>
         </div>
         <div>
           <h4>累计治愈</h4>
-          <p>123456</p>
+          <p>{{chinaTotal.total.heal}}</p>
           <p>
             <span>较昨日</span>
-            <span>+123</span>
+            <span>+{{chinaTotal.today.heal}}</span>
+          </p>
+        </div>
+      </div> 
+
+      <!-- 湖北疫情数据 -->
+      <div v-if="chinaTotal.total" v-show="!active" class="cover-info">
+        <div>
+          <h4>累计确诊</h4>
+          <p>{{chinaTotal.total.confirm}}</p>
+          <p>
+            <span>较昨日</span>
+            <span>+{{chinaTotal.today.confirm}}</span>
+          </p>
+        </div>
+        <div>
+          <h4>累计死亡</h4>
+          <p>{{chinaTotal.total.dead}}</p>
+          <p>
+            <span>较昨日</span>
+            <span>+{{chinaTotal.today.dead}}</span>
+          </p>
+        </div>
+        <div>
+          <h4>累计治愈</h4>
+          <p>{{chinaTotal.total.heal}}</p>
+          <p>
+            <span>较昨日</span>
+            <span>+{{chinaTotal.today.heal}}</span>
           </p>
         </div>
       </div>
