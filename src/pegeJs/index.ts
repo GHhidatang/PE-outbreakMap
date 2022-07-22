@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as echarts from 'echarts';
 import type { IData } from "../type/index";
 
 class InteData implements IData {
