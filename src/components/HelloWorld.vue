@@ -1,7 +1,11 @@
 <script setup lang="ts">
   import { onMounted, reactive, ref, toRefs } from 'vue';
+  import List from "./List.vue";
+  import ScrollCom from "./ScrollCom.vue";
   // import type { IData } from "../type/index";
   import { InteData, initDataFun } from "../pegeJs/index";
+
+  let page: number = 0;
   
   const data:any = reactive(new InteData());
 
@@ -18,15 +22,33 @@
   let mapTypeChinage = (flag: Boolean) => {
     mapType.value = flag;
   }
+  const getList = () => {
+    if (page === data.areaTree.length - 1) {
+      data.isScroll = false;
+      return;
+    }
+    console.log("加载下一页");
 
-  const { chinaTotal, scData } = toRefs(data);
+    // 子组件触发,加载下一页
+    page++;
+    data.showList.push(...data.areaTree[page]);
+  };
+  const refreshFun = (fun: Function) => {
+    initDataFun(data).then(() => {
+      page = 0;
+      data.isScroll = true;
+      fun();
+    });
+  };
+
+  const { chinaTotal, scData, china, areaTree } = toRefs(data);
 </script>
 
 <template>
 
   <div class="box">
     <div class="top-box">  
-      <img class="bg-img" src="../assets/B站专栏封面3.jpg" alt="">
+      <img class="bg-img" src="../assets/bg.png" alt="">
       <div class="title-text">
         <h1>科学防护 共渡难关</h1>
         <h2>肺炎疫情实时动态播报</h2>
@@ -137,7 +159,7 @@
         id="map"
       ></div>
       <div
-        :class="mapType == false ? 'to-left' : 'to-right'"
+        :class="mapType == true ? 'to-left' : 'to-right'"
         id="map2"
       ></div>
     </div>
@@ -151,7 +173,30 @@
     </div>
   </div>
 
+  <div class="data-line content">
+      <div class="line-box">
+        <div id="line"></div>
+        <div id="line1"></div>
+        <div id="line2"></div>
+      </div>
+  </div>
 
+  <!-- 列表 -->
+    <div class="data-list content">
+      <h3>中国病例</h3>
+      <List v-if="china.length" :showChildren="true" :list="china" />
+    </div>
+    <div v-if="data.showList.length" class="data-list content">
+      <h3>世界病例</h3>
+      <ScrollCom
+        :distance="100"
+        :isScroll="data.isScroll"
+        @getList="getList"
+        @refreshFun="refreshFun"
+      >
+        <List :showChildren="false" :list="data.showList" />
+      </ScrollCom>
+    </div>
 </template>
 
 <style lang="scss" scoped>
