@@ -274,7 +274,7 @@ const initDataFun = (data:InteData) => {
             ...optionLine,
             series: [
                 {
-                    type: "line",
+                    type: "line", 
                     xAxisIndex: 0,
                     data: lineData.heal,
                 },
@@ -289,7 +289,6 @@ const initDataFun = (data:InteData) => {
                 },
             ],
         });
-
     });
 }
 

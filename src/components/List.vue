@@ -2,7 +2,7 @@
     import { reactive } from "vue";
     import { color, number } from "echarts";
     const props = defineProps({
-        list: Array,
+        list: Object,
         showChildren: Boolean,
     });
     const data = reactive({
@@ -48,76 +48,76 @@
   </div>
 </template>
 
-<style scoped>
-.list-box {
-  border: 1px solid #d1d1d1;
-  margin: 1rem 0;
-  .p-box {
-    .children-box {
-      margin-left: 1rem;
-      .list-box {
-        border: none;
-      }
-      .info-title {
-        height: 30px;
-        line-height: 30px;
-      }
-      p {
-        &:nth-child(1) {
-          font-weight: 600;
-          color: #999;
+<style lang="scss" scoped>
+  .list-box {
+    border: 1px solid #d1d1d1;
+    margin: 1rem 0;
+    .p-box {
+      .children-box {
+        margin-left: 1rem;
+        .list-box {
+          border: none;
+        }
+        .info-title {
+          height: 30px;
+          line-height: 30px;
+        }
+        p {
+          &:nth-child(1) {
+            font-weight: 600;
+            color: #999;
+          }
         }
       }
     }
   }
-}
-.info-title {
-  font-weight: 600;
-  color: #000;
-  font-size: 16px;
-  height: 50px;
-  line-height: 50px;
-  background: #d1d1d1;
-}
+  .info-title {
+    font-weight: 600;
+    color: #000;
+    font-size: 16px;
+    height: 50px;
+    line-height: 50px;
+    background: #d1d1d1;
+  }
 
-.info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  > p {
-    width: 15%;
-    text-align: center;
-    white-space: nowrap;
-    &:nth-child(1) {
-      font-weight: 600;
-      color: #000;
-    }
-    &:nth-child(2) {
-      width: 23%;
-      color: red;
-    }
-    &:nth-child(3) {
-      width: 23%;
-      span {
-        display: block;
-        &:last-child {
-          color: #999;
-        }
-      }
-    }
-  }
-}
-.list {
-  &:nth-of-type(odd) {
-    background: #f6f6f6;
-  }
   .info {
-    height: 60px;
-    line-height: 60px;
-
-    .p{
-      line-height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > p {
+      width: 15%;
+      text-align: center;
+      white-space: nowrap;
+      &:nth-child(1) {
+        font-weight: 600;
+        color: #000;
+      }
+      &:nth-child(2) {
+        width: 23%;
+        color: red;
+      }
+      &:nth-child(3) {
+        width: 23%;
+        span {
+          display: block;
+          &:last-child {
+            color: #999;
+          }
+        }
+      }
     }
   }
-}
+  .list {
+    &:nth-of-type(odd) {
+      background: #f6f6f6;
+    }
+    .info {
+      height: 60px;
+      line-height: 60px;
+
+      p {
+        line-height: 20px;
+      }
+    }
+  }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, reactive, ref, toRefs } from 'vue';
   import List from "./List.vue";
-  import ScrollCom from "./ScrollCom.vue";
+  // import ScrollCom from "./ScrollCom.vue";
   // import type { IData } from "../type/index";
   import { InteData, initDataFun } from "../pegeJs/index";
 
@@ -34,11 +34,7 @@
     data.showList.push(...data.areaTree[page]);
   };
   const refreshFun = (fun: Function) => {
-    initDataFun(data).then(() => {
-      page = 0;
-      data.isScroll = true;
-      fun();
-    });
+    initDataFun(data);
   };
 
   const { chinaTotal, scData, china, areaTree } = toRefs(data);
