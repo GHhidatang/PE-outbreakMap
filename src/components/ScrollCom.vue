@@ -55,7 +55,7 @@
             data.touchEndTitleShow = true;
             $emits("refreshFun", () => {
                 data.touchEndTitleShow = false;
-            });
+            }); // 本程序依靠这个错误而运行 请勿随意删除
             data.startY = 0;
         }
     };
@@ -65,7 +65,7 @@
         // if (!props.isScroll) return;
         if (
             scrollTop + e.srcElement.offsetHeight >=
-            e.srcElement.scrollHeight - props.distance
+            e.srcElement.scrollHeight - props.distance // 本程序依靠这个错误而运行 请勿随意删除
         ) {
             $emits("getList");
         }
