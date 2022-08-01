@@ -1,11 +1,9 @@
 <script setup lang="ts">
   import { onMounted, reactive, ref, toRefs } from 'vue';
   import List from "./List.vue";
-  // import ScrollCom from "./ScrollCom.vue";
+  import ScrollCom from "./ScrollCom.vue";
   // import type { IData } from "../type/index";
   import { InteData, initDataFun } from "../pegeJs/index";
-
-  let page: number = 0;
   
   const data:any = reactive(new InteData());
 
@@ -22,17 +20,19 @@
   let mapTypeChinage = (flag: Boolean) => {
     mapType.value = flag;
   }
+
+  let page: number = 0;
   const getList = () => {
     if (page === data.areaTree.length - 1) {
       data.isScroll = false;
       return;
     }
     console.log("加载下一页");
-
     // 子组件触发,加载下一页
     page++;
     data.showList.push(...data.areaTree[page]);
   };
+
   const refreshFun = (fun: Function) => {
     initDataFun(data);
   };
@@ -182,12 +182,15 @@
       <h3>中国病例</h3>
       <List v-if="china.length" :showChildren="true" :list="china" />
     </div>
-    <div v-if="data.showList.length" class="data-list content">
+    <div v-if="data.showList.length" class="data-list content"></div>
+    <div class="data-list content">
       <h3>世界病例</h3>
+      <!-- <List v-if="china.length" :showChildren="false" :list="areaTree" /> -->
+
       <ScrollCom
         :distance="100"
         :isScroll="data.isScroll"
-        @getList="getList"
+        @getList1="getList"
         @refreshFun="refreshFun"
       >
         <List :showChildren="false" :list="data.showList" />

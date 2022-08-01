@@ -7,6 +7,7 @@ type EChartsOption = echarts.EChartsOption;
 
 class InteData implements IData {
     areaTree: any[] = []
+    showList: any[] = []
     chinaDayList: any[] = []
     chinaTotal: any[] = []
     china: any[] = []
@@ -16,6 +17,7 @@ class InteData implements IData {
     lastUpdataTime: string = ''
     name: string = ''
     type: number = 1
+    isScroll: Boolean = true
 }
 
 const getPageList = (list: any[]) => {
@@ -70,11 +72,13 @@ const initDataFun = (data:InteData) => {
     myMap.showLoading();
     axios('/api/ug/api/wuhan/app/data/list-total').then((res:any)=> {
         console.log(res);
-        data.areaTree = res.data.data.areaTree;
+        // data.areaTree = res.data.data.areaTree;
+        data.areaTree = getPageList(res.data.data.areaTree);
+        data.showList = data.areaTree[0]
         data.chinaDayList = res.data.data.chinaDayList;
         data.chinaTotal = res.data.data.chinaTotal;
-        data.china = data.areaTree.find((v:any) => v.id === "0").children;
-        data.scData = data.china.find((v:any) => v.id === "510000");
+        data.china = res.data.data.areaTree.find((v: any) => v.id === "0").children;
+        data.scData = data.china.find((v) => v.id === "510000");
         // console.log(data.scData);
 
         let mapData:any[] = [],

@@ -1,23 +1,23 @@
-<script setup lang = "ts">
+<script setup name="List" lang = "ts">
     import { reactive } from "vue";
     import { color, number } from "echarts";
     const props = defineProps({
-        list: Object,
-        showChildren: Boolean,
+      list: Object,
+      showChildren: Boolean,
     });
     const data = reactive({
-    isShowChildren: "",
+      isShowChildren: "",
     });
 
     const getChowChildren = (id: string) => {
-        data.isShowChildren == id
-        ? (data.isShowChildren = "")
-        : (data.isShowChildren = id);
+      data.isShowChildren == id
+      ? (data.isShowChildren = "")
+      : (data.isShowChildren = id);
     };
 </script>
 
 <template>
-    <div class="list-box">
+  <div class="list-box">
     <div class="info-title info">
       <p>地区</p>
       <p>现有确诊</p>
