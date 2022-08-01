@@ -163,14 +163,6 @@
         id="map2"
       ></div>
     </div>
-    <div class="map-btn">
-      <div @click="mapTypeChinage(true)" :class="{'active': mapType}">
-        现有确诊
-      </div>
-      <div @click="mapTypeChinage(false)" :class="{'active': !mapType}">
-        累计确诊
-      </div>
-    </div>
   </div>
 
   <div class="data-line content">
