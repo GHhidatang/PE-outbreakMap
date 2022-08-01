@@ -34,7 +34,11 @@
   };
 
   const refreshFun = (fun: Function) => {
-    initDataFun(data);
+    initDataFun(data).then(() => {
+      page = 0;
+      data.isScroll = true;
+      fun();
+    });
   };
 
   const { chinaTotal, scData, china, areaTree } = toRefs(data);
@@ -188,10 +192,10 @@
       <!-- <List v-if="china.length" :showChildren="false" :list="areaTree" /> -->
 
       <ScrollCom
-        :distance="100"
-        :isScroll="data.isScroll"
-        @getList1="getList"
-        @refreshFun="refreshFun"
+      :distance="100"
+      :isScroll="data.isScroll"
+      @getList="getList"
+      @refreshFun="refreshFun"
       >
         <List :showChildren="false" :list="data.showList" />
       </ScrollCom>

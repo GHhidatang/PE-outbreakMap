@@ -32,7 +32,7 @@
           <p>{{ i.total.confirm - i.today.dead - i.today.heal }}</p>
           <p>
             <span>{{ i.total.confirm }}</span>
-            <span>较昨日{{ i.today.confirm }}</span>
+            <span>较昨日+{{ i.today.confirm }}</span>
           </p>
           <p>{{ i.total.dead }}</p>
           <p>{{ i.total.heal }}</p>

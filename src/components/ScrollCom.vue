@@ -30,6 +30,36 @@
         translateY,
     } = toRefs(data);
 
+    //手指触碰到屏幕
+    const touchstart = (e: any) => {
+        let y = e.targetTouches[0].pageY;
+        data.startY = y;
+    };
+    //手指开始滑动
+    const touchmove = (e: any) => {
+        let y = e.targetTouches[0].pageY;
+        if (y > data.startY && data.scrollTop == 0) {
+            data.touchstartTitleShow = true;
+            //如果当前移动距离大于初始点击坐标，则视为是下拉。并且要处于顶部才刷新，不能影响正常的列表滑动。
+            data.translateY = (y - data.startY) / 2;
+        } else {
+            data.touchstartTitleShow = false;
+        }
+    };
+    //手指松开
+    const touchend = (e: any) => {
+        let y = e.changedTouches[0].pageY;
+        if (y > data.startY) {
+            data.translateY = 0;
+            data.touchstartTitleShow = false;
+            data.touchEndTitleShow = true;
+            $emits("refreshFun", () => {
+                data.touchEndTitleShow = false;
+            });
+            data.startY = 0;
+        }
+    };
+
     const scrollEvent = (e: any) => {
         scrollTop = e.srcElement.scrollTop;
         // if (!props.isScroll) return;
@@ -45,15 +75,19 @@
 <template>
     <div class="box">
         <div
-            @scroll="scrollEvent"
-            ref="scrolE1"
-            class="scroll-box"
+        @touchend="touchend"
+        @touchmove="touchmove"
+        @touchstart="touchstart"
+        @scroll="scrollEvent"
+        ref="scrolE1"
+        :style="{ top: `${translateY}px` }"
+        class="scroll-box"
         >
             <div class="loadingBox" v-if="touchstartTitleShow">释放可刷新...</div>
             <div class="loadingBox" v-if="touchEndTitleShow">加载中...</div>
             
             <slot></slot>
-            <div v-if="!isScroll">{{endText}}</div>
+            <div class="end-text" v-if="!isScroll">{{endText}}</div>
         </div>
     </div>
 </template>
